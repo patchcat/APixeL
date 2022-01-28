@@ -1,10 +1,10 @@
 :Namespace APixeL
 
-Root ← 'http://r/'       ⋄ Event     ← 'Event' 'HTTPRequest' 'Handler'
-Size ← 'Size'(2⍴1000)    ⋄ Coord     ← 'Coord' 'ScaledPixel'
-Url  ← 'URL'(Root,'app') ⋄ Intercept ← 'InterceptedURLs' (1 2⍴(Root,'*') 1)
+ROOT ← 'http://r/'       ⋄ EVENT ← 'Event' 'HTTPRequest' 'Handler'
+SIZE ← 'Size'(2⍴1000)    ⋄ COORD ← 'Coord' 'ScaledPixel'
+URL  ← 'URL'(ROOT,'app') ⋄ INT   ← 'InterceptedURLs' (1 2⍴(ROOT,'*') 1)
 
-'hr' ⎕WC'HTMLRenderer' Intercept Url Event Size Coord
+'hr' ⎕WC'HTMLRenderer' INT URL EVENT SIZE COORD
 hr.ShowDevTools 1
 
 L     ← ⊃⊢⌿
@@ -31,7 +31,7 @@ Css ← {
 
 Get ← {
     (obj evt op int sc st mime url hdr data meth) ← ⍵
-    page  ← (≢Root)↓url
+    page  ← (≢ROOT)↓url
 
     found ← 200 'OK' (Css Js #.route⍎page)
     lost  ← 404 'Not Found' '<h2>Page not found!</h2>'
