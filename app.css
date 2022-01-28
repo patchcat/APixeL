@@ -1,0 +1,27 @@
+*           { font-family     : "Apple II Pro"; box-sizing : border-box; padding: 0; margin: 0; }
+table,tr,td { border          : 1px solid #abc; }
+table       { border-collapse :       collapse; margin     :  40px auto; }
+tr          { height          :           25px; }
+td          { width           :           25px; }
+ul          { list-style      :           none; }
+nav         { background      :        #d3cbbe; }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button
+{ -webkit-appearance: none; margin: 0; }
+
+button,
+input[type="submit"],
+input[type="reset"] 
+{ background :    none; color  : inherit; border  : none; padding: 0;
+  font       : inherit; cursor : pointer; outline : none; }
+
+#menu 
+{ background     : #d3cbbe; position : absolute; display :  flex; visibility: hidden;
+  flex-direction :  column; width    :    400px; height  : 400px;
+
+  border         : 2px solid black; 
+  box-shadow     :   1px 1px black; }
+
+#menu
+{ -webkit-touch-callout : none; -webkit-user-select : none; -khtml-user-select: none;
+  -moz-user-select      : none; -ms-user-select     : none; user-select       : none; }
