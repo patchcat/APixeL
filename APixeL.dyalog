@@ -1,8 +1,8 @@
 :Namespace APixeL
 
-ROOT ← 'http://r/'       ⋄ EVENT ← 'Event' 'HTTPRequest' 'Handler'
-SIZE ← 'Size'(2⍴1000)    ⋄ COORD ← 'Coord' 'ScaledPixel'
-URL  ← 'URL'(ROOT,'app') ⋄ INT   ← 'InterceptedURLs' (1 2⍴(ROOT,'*') 1)
+ROOT ← 'http://r/'        ⋄ EVENT ← 'Event' 'HTTPRequest' 'Handler'
+SIZE ← 'Size' (1920 1080) ⋄ COORD ← 'Coord' 'ScaledPixel'
+URL  ← 'URL' (ROOT,'app') ⋄ INT   ← 'InterceptedURLs' (1 2⍴(ROOT,'*') 1)
 
 'hr' ⎕WC'HTMLRenderer' INT URL EVENT SIZE COORD
 hr.ShowDevTools 1
@@ -43,18 +43,27 @@ Get ← {
 
 Post ← {
     Canvas ← {
-        table ← 'tbody' Tag ∊(100⌊⍺)/⊂'<tr>' ((100⌊⍵)/⊂'<td></td>') '</tr>'
-        hr.ExecuteJavaScript 'document.getElementById("canvas").innerHTML ="',table,'"'
+        (obj evt op int sc st mime url hdr data meth) ← ⍺
+        (h w) ← 32⌊⍵
+        table ← 'tbody' Tag ∊h/⊂'<tr>' (w/⊂'<td></td>') '</tr>'
+        exec  ← 'document.getElementById("canvas").innerHTML ="',table,'";'
+        exec ,← 'cells = document.getElementsByTagName("td");'
+        exec ,← 'for (i = 0; i < cells.length; i++) {cells[i].addEventListener("click", fillSquare)}'
+
+        _ ← hr.ExecuteJavaScript exec
+        obj evt op 1 200 'OK' mime url hdr ⍬
     }
 
     Menu   ← {
+        (obj evt op int sc st mime url hdr data meth) ← ⍺
         content ← Read 'menu/',⍵,'.html'
-        hr.ExecuteJavaScript 'document.getElementById("menu").innerHTML =`',content,'`'
+        _ ← hr.ExecuteJavaScript 'document.getElementById("menu").innerHTML =`',content,'`'
+        obj evt op 1 200 'OK' mime url hdr ⍬
     }
 
     (obj evt op int sc st mime url hdr data meth) ← ⍵
-    r ← 0 ⎕JSON data
-    'evaluate'≡F r:⍎L r
+    (expr fn arg) ← 0 ⎕JSON data
+    'evaluate'≡expr:⍵ (⍎fn) arg
 }
 
 Handler ← {

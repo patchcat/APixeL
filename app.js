@@ -7,19 +7,18 @@ const R = (p) => {
   );
   xhr.send(JSON.stringify(p));
 };
-
-const Close   = (_) => {
+const Close   = (_)    => {
   let menu = document.getElementById("menu");
   menu.innerHTML     = "";
   menu.style.visibility = "hidden";
 };
-const Open    = (_) => {
+const Open    = (_)    => {
   let menu = document.getElementById("menu");
   menu.style.visibility = "visible";
-}
-const Canvas  = (h, w) => {R(["evaluate", `${h} Canvas ${w}`]);}
-const Menu    = (type) => {Open();R(["evaluate",`Menu ${type}`]);}
-window.onload = _      => {Drag(document.getElementById("menu"));};
+};
+const Canvas  = (h, w) => {R(["evaluate", "Canvas", [parseInt(h), parseInt(w)]])};
+const Menu    = (type) => {Open();R(["evaluate", "Menu", type])};
+window.onload = _      => {Drag(document.getElementById("menu"))};
 const Drag    = (el)   => {
   el.addEventListener("mousedown", function (e) {
     offsetX = e.clientX - parseInt(window.getComputedStyle(this).left);
@@ -34,3 +33,6 @@ const Drag    = (el)   => {
     window.addEventListener("mouseup"  , _ => {window.removeEventListener("mousemove", mouseMoveHandler)});
   });
 };
+
+let colour = "#000000";
+function fillSquare () { this.setAttribute("style", `background-color: ${colour};border: 1px solid ${colour};`); }
