@@ -62,14 +62,8 @@ Menu   ← {
     obj evt op 1 200 'OK' mime url hdr ⍬
 }
 
-ToRgb ← {
-    rgb ← 256⊥⍣¯1⊢⍵         ⍝ initial conversion, possibilty of ⍬
-    san ← rgb,0↑⍨3×⍬≡rgb    ⍝ appends no. 0s equal to 3×⍬≡Y
-    fmt ← ','(1↓∘,,∘⍕⍤0)san ⍝ format rgb values and seperate with commas
-    ∊'rgb('fmt')'
-} 
-
 ToTable  ← {
+    ToRgb ← {∊'rgb('(','(1↓∘,,∘⍕⍤0)⍵⊤⍨3/256)')'}
     cells ← ({⊂'<td style=''background-color: `;''></td>' In⍨⊂ToRgb⍵}⍤0)⍵
     (∊'tbody' Tag {'<tr>'⍵'</tr>'}⍤1)cells
 }
