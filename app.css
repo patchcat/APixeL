@@ -1,27 +1,54 @@
-*           { font-family     : "Apple II Pro"; box-sizing : border-box; padding: 0; margin: 0; }
-table,tr,td { border          : 1px solid #abc; }
-table       { border-collapse :       collapse; margin     :  40px auto; }
-tr          { height          :           25px; }
-td          { width           :           25px; }
-ul          { list-style      :           none; }
-nav         { background      :        #d3cbbe; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Apple II Pro";
+  box-sizing: border-box;
+  outline: none;
+}
+
 input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button
-{ -webkit-appearance: none; margin: 0; }
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
 
-button,
-input[type="submit"],
-input[type="reset"] 
-{ background :    none; color  : inherit; border  : none; padding: 0;
-  font       : inherit; cursor : pointer; outline : none; }
+@layer base {
+  html {
+    overflow: hidden;
+  }
 
-#menu 
-{ background     : #d3cbbe; position : absolute; display :  flex; visibility: hidden;
-  flex-direction :  column; width    :    400px; height  : 400px;
+  body,
+  html {
+    @apply h-full;
+  }
 
-  border         : 2px solid black; 
-  box-shadow     :   1px 1px black; }
+  table,
+  tr,
+  td {
+    @apply border-solid border border-gray-500;
+  }
 
-#menu
-{ -webkit-touch-callout : none; -webkit-user-select : none; -khtml-user-select: none;
-  -moz-user-select      : none; -ms-user-select     : none; user-select       : none; }
+  tr {
+    height: 25px;
+  }
+  td {
+    width: 25px;
+  }
+
+  input {
+    @apply float-right appearance-none m-0 border-solid border-2 border-black px-1.5;
+    box-shadow: 2px 2px white;
+  }
+
+  summary,
+  p {
+    @apply bg-gray-300;
+    margin: 0px 0 -1px 0px;
+    padding: 0 0 0 0.5rem;
+    border: 1px black solid;
+  }
+  summary {
+    padding: 0 1rem 0 0.5rem;
+  }
+}

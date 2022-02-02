@@ -1,32 +1,25 @@
-<style>
-  .container { margin           :            0.425em; }
-  .header    { border-bottom    : 2px #948174 dashed; color         :         #3b6d83;
-               width            :               100%; display       :    inline-block; }
-  input      { float            :              right; border        : 2px solid black;
-               box-shadow       :      2px 2px white; padding       :     0.2em 0.4em; }
-  .field     { width            :                50%; }
-  button     { background-color :            #c6c6c7; border-radius :            25px; }
-</style>
-<span style="background-color: #7b919d; color: #ffffff; padding: 0.1625em"
-  >Canvas Size</span
->
-<div class="container">
-  <span style="margin-bottom: 0.625em" class="header">Size</span>
-  <div  style="margin-bottom: 0.625em" class="field">
+<span class="bg-slate-400 text-white p-0.5">Canvas Size</span>
+<div class="m-2">
+  <span
+    class="mb-2.5 border-dashed border-b-2 border-zinc-500 w-full inline-block"
+    >Size</span
+  >
+  <div class="mb-2.5 w-1/2">
     <span>Width:</span>
     <input type="number" name="cHeight" min="1" max="32" value="16" />
   </div>
-  <div style="margin-bottom: 0.625em" class="field">
+  <div class="mb-2.5 w-1/2">
     <span>Height:</span>
-    <input type="number" name="cWidth"  min="1" max="32" value="16" />
+    <input type="number" name="cWidth" min="1" max="32" value="16" />
   </div>
-  <div style="display: flex; justify-content: space-evenly; width: 75%">
+  <div class="flex justify-evenly w-3/4">
     <button
+      class="rounded-lg bg-purple-300"
       onClick="Canvas(document.getElementsByName('cHeight')[0].value,
    document.getElementsByName('cWidth')[0].value);Close();"
     >
       Ok
     </button>
-    <button onClick="Close();">Cancel</button>
+    <button class="rounded-lg bg-purple-300" onClick="Close();">Cancel</button>
   </div>
 </div>
