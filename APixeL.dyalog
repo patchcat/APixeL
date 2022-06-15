@@ -19,7 +19,7 @@
     }
 
     APL ← {
-        ⍝⍳11::f.app.ExecuteJavaScript'document.getElementById("stacktrace").innerHTML =`',(⎕DMX.(Message{⍵,⍺,⍨': '/⍨×≢⍺}⎕EM EN)),'`'
+        ⍳11::f.app.ExecuteJavaScript'document.getElementById("stacktrace").innerHTML =`',(⎕DMX.(Message{⍵,⍺,⍨': '/⍨×≢⍺}⎕EM EN)),'`'
 
         (fn data shape) ← ⍵
         ∆Table ⍙Table ((⍎)'UTF-8'⎕UCS fn)shape ⍙Canvas data
@@ -67,7 +67,7 @@
       'f'⎕WC'Form'
       f.(Posn Size) ← (0 0)(100 100)
       'f.app'⎕WC'HTMLRenderer'('AsChild' 1)
-      f.app.ShowDevTools 1
+      ⍝ f.app.ShowDevTools 1
       f.app.(Event Posn Size HTML) ← ('HTTPRequest' 'Handler')(0 0)(100 100)(Css Js Read 'app.html')
       ⎕DQ'f'
     ∇
