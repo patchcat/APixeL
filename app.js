@@ -1,14 +1,7 @@
 var colour = "rgb(0,0,0)";
 
-const R = (p) => {
-  xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://dyalog_root/app", true);
-  xhr.setRequestHeader(
-    "Content-Type",
-    'application/javascript; charset=utf-8'
-  );
-  xhr.send(JSON.stringify(p));
-};
+const socket = new WebSocket("ws://dyalog_root/")
+const Send     = (data) => { socket.send(JSON.stringify(data)) }
 const Close    = (_)    => {
   let menu = document.getElementById("menu");
   menu.innerHTML     = "";
@@ -18,22 +11,8 @@ const Open     = (_)    => {
   let menu = document.getElementById("menu");
   menu.style.visibility = "visible";
 };
-const Canvas   = (h, w) => {R(["Canvas", [parseInt(h), parseInt(w)]])};
-const Save     = (file) => {
-  var [cells, canvas] = [
-    document.getElementsByTagName("td"),
-    document.getElementById("canvas"),
-  ];
-  R([
-    "Save",
-    [
-      file,
-      [...cells].map((x) => x.style.backgroundColor),
-      [canvas.rows.length, canvas.rows[0].cells.length],
-    ],
-  ]);
-};
-const Menu     = (type) => {Open();R(["Menu", type])};
+const Canvas   = (h, w) => {Send(["Canvas", [parseInt(h), parseInt(w)]])};
+const Menu     = (type) => {Open();Send(["Menu", type])};
 const APL   = (f)    => {
   var utf8 = unescape(encodeURIComponent(f));
   var arr = [];
@@ -42,7 +21,7 @@ const APL   = (f)    => {
     document.getElementsByTagName("td"),
     document.getElementById("canvas"),
   ];
-  R([
+  Send([
     "APL",
     [
       arr,
