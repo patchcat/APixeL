@@ -30,24 +30,24 @@
       } ⍝ Apply fn to Canvas
 
       t∆Table←{
-          cells←({⊂'<td style=''background-color: `;''></td>'In⍨⊂∆Rgb ⍵}⍤0)⍵
-          ('tbody' Tag∘, 'tr'∘Tag⍤1)cells
+        cells ← {'<td style=''background-color: ',(∆Rgb ⍵),';''></td>'}¨⍵
+        'tbody' Tag,('tr'∘Tag⍤1)cells
       } ⍝ Transform integer matrix to html table
 
       w∆Table←{
           exec←'document.getElementById("canvas").innerHTML ="',⍵,'";'
-          exec,←'cells = document.getElementsByTagName("td");'
-          exec,←'for (i = 0; i < cells.length; i++) {cells[i].addEventListener("click", fillSquare)}'
+          exec,←'cells = document.querySelectorAll("td");'
+          exec,←'cells.forEach(c => c.addEventListener("click", fillSquare))'
           f.app.ExecuteJavaScript exec
       }  ⍝ Overwrite #canvas with tbody string
 
       Canvas←{
           (h w)←32⌊⍵
-          w∆Table 'tbody'Tag∊h/⊂'<tr>'(w/⊂'<td style=''background-color: rgb(255, 255, 255);''></td>')'</tr>'
+          w∆Table 'tbody' Tag h⍴⊂ 'tr' Tag w⍴⊂ '<td style=''background-color: rgb(255, 255, 255);''></td>'
       } ⍝ #canvas table of size h×w - compromising of white cells. 
 
       Menu←{
-          content←Read'menu/',⍵,'.html'
+          content←Read 'menu/',⍵,'.html'
           f.app.ExecuteJavaScript'document.getElementById("menu").innerHTML =`',content,'`'
       } ⍝ Set menu item
 
