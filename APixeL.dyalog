@@ -45,7 +45,7 @@
       
       APL←{
           ⍝ Trap and display user errors
-          ⍝ ⍳11::f.ExecuteJavaScript'document.getElementById("stacktrace").innerHTML =`',(⎕DMX.(Message{⍵,⍺,⍨': '/⍨×≢⍺}⎕EM EN)),'`'
+          ⍳11::f.ExecuteJavaScript'document.getElementById("stacktrace").innerHTML =`',(⎕DMX.(Message{⍵,⍺,⍨': '/⍨×≢⍺}⎕EM EN)),'`'
      
           (fn data shape)←⍵
           w∆Table t∆Table((⍎)'UTF-8'⎕UCS fn)shape⍴∘⍙Rgb data
