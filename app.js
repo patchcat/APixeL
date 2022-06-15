@@ -2,7 +2,7 @@ var colour = "rgb(0,0,0)";
 
 const R = (p) => {
   xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://r/", true);
+  xhr.open("POST", "http://dyalog_root/app", true);
   xhr.setRequestHeader(
     "Content-Type",
     'application/javascript; charset=utf-8'
@@ -18,14 +18,13 @@ const Open     = (_)    => {
   let menu = document.getElementById("menu");
   menu.style.visibility = "visible";
 };
-const Canvas   = (h, w) => {R(["evaluate", "Canvas", [parseInt(h), parseInt(w)]])};
+const Canvas   = (h, w) => {R(["Canvas", [parseInt(h), parseInt(w)]])};
 const Save     = (file) => {
   var [cells, canvas] = [
     document.getElementsByTagName("td"),
     document.getElementById("canvas"),
   ];
   R([
-    "evaluate",
     "Save",
     [
       file,
@@ -34,8 +33,8 @@ const Save     = (file) => {
     ],
   ]);
 };
-const Menu     = (type) => {Open();R(["evaluate", "Menu", type])};
-const RunAPL   = (f)    => {
+const Menu     = (type) => {Open();R(["Menu", type])};
+const APL   = (f)    => {
   var utf8 = unescape(encodeURIComponent(f));
   var arr = [];
   for (var i = 0; i < utf8.length; i++) arr.push(utf8.charCodeAt(i));
@@ -44,8 +43,7 @@ const RunAPL   = (f)    => {
     document.getElementById("canvas"),
   ];
   R([
-    "evaluate",
-    "RunAPL",
+    "APL",
     [
       arr,
       [...cells].map((x) => x.style.backgroundColor),

@@ -1,112 +1,76 @@
-:Namespace APixeL
+:NameSpace APixeL
 
-root ← 'http://r/'        ⋄ event ← 'Event' 'HTTPRequest' 'Handler'
-size ← 'Size' (1920 1080) ⋄ coord ← 'Coord' 'ScaledPixel'
-url  ← 'URL' (root,'app') ⋄ int   ← 'InterceptedURLs' (1 2⍴(root,'*') 1)
+    F    ← ⊃,/
+    In   ←  F ⊣@('`'∘=)
+    Tag  ← {F '<' ⍺ '>' (F ⍵) '</' ⍺ '>'}
+    Read ← ⊃∘⎕NGET
+    Esc  ← {⊃(↑⍪'\'⍪↓)/(1-⍨⍸∨⌿⍺∘.=⍵),⊂⍵}
 
-'hr' ⎕WC'HTMLRenderer' int url event size coord
+    Js ← {
+        name←('\w*.js\b'⎕S'&')⍵
+        tmp←name In F '\s*'∘,¨'<script src="`" charset="utf-8"></script>'
+        (tmp ⎕R('%\'Esc'script'Tag Read name))⍵
+    }
 
-In    ← ∊⊣@('`'∘=)
-Tag   ← {∊'<'⍺'>'⍵'</'⍺'>'}
-Read  ← ⊃∘⎕NGET
-Esc   ← {⊃(↑⍪'\'⍪↓)/(1-⍨⍸∨⌿⍺∘.=⍵),⊂⍵}
+    Css ← { 
+        name←('\w*.css\b'⎕S'&')⍵
+        tmp←name In F '\s*'∘,¨'<link rel="stylesheet" href="`"/>'
+        tmp(⎕R('%\'Esc'style'Tag Read name))⍵
+    }
 
-#.route     ← ⎕NS''
-#.route.app ← Read 'app.html'
+    APL ← {
+        ⍝⍳11::f.app.ExecuteJavaScript'document.getElementById("stacktrace").innerHTML =`',(⎕DMX.(Message{⍵,⍺,⍨': '/⍨×≢⍺}⎕EM EN)),'`'
 
-Js ← {
-    name ← '\w*.js\b' ⎕S '&'⊢⍵
-    tmp  ← name In ∊'\s*'∘,¨'<script src="`" charset="utf-8"></script>'
-    tmp⎕R('%\' Esc 'script' Tag Read name)⊢⍵
-}
+        (fn data shape) ← ⍵
+        ∆Table ⍙Table ((⍎)'UTF-8'⎕UCS fn)shape ⍙Canvas data
+    }
 
-Css ← {
-    name ← '\w*.css\b' ⎕S '&'⊢⍵
-    tmp  ← name In ∊'\s*'∘,¨'<link rel="stylesheet" href="`"/>'
-    tmp⎕R('%\' Esc 'style' Tag Read name)⊢⍵
-}
+    ⍙Rgb ← {256⊥⍤1 ⎕CSV(~∘'rgb()'¨⍵)⍬ 2}
+    ∆Rgb ← {F 'rgb('(','(1↓∘,,∘⍕⍤0)⍵⊤⍨3/256)')'}
+    
+    ⍙Table ← {
+        cells ← ({⊂'<td style=''background-color: `;''></td>'In⍨⊂∆Rgb ⍵}⍤0)⍵
+        ('tbody' Tag∘, 'tr'∘Tag⍤1)cells
+    }
 
-Get ← {
-    (obj evt op int sc st mime url hdr data meth) ← ⍵
-    page  ← (≢root)↓url
+    ∆Table ←{
+        exec ← 'document.getElementById("canvas").innerHTML ="',⍵,'";'
+        exec,← 'cells = document.getElementsByTagName("td");'
+        exec,← 'for (i = 0; i < cells.length; i++) {cells[i].addEventListener("click", fillSquare)}'
+        f.app.ExecuteJavaScript exec
+    }
 
-    found ← 200 'OK' (Css Js #.route⍎page)
-    lost  ← 404 'Not Found' '<h2>Page not found!</h2>'
+    ⍙Canvas ← ⍴∘⍙Rgb
 
-    (sc st data) ← found⊣⍣(2∊#.route.⎕NC page)⊢lost
+    ∆Canvas ← {
+        (h w) ← 32⌊⍵
+        ∆Table'tbody'Tag∊h/⊂'<tr>'(w/⊂'<td style=''background-color: rgb(255, 255, 255);''></td>')'</tr>'
+    }
 
-    obj evt op 1 sc st 'text/html' url hdr data
-}
+    Menu ← {
+        content ← Read'menu/',⍵,'.html'
+        f.app.ExecuteJavaScript'document.getElementById("menu").innerHTML =`',content,'`'
+    }
 
-WriteTable ← {
-    exec  ← 'document.getElementById("canvas").innerHTML ="',⍵,'";'
-    exec ,← 'cells = document.getElementsByTagName("td");'
-    exec ,← 'for (i = 0; i < cells.length; i++) {cells[i].addEventListener("click", fillSquare)}'
-    hr.ExecuteJavaScript exec
-}
-
-Canvas ← {
-    (obj evt op int sc st mime url hdr data meth) ← ⍺
-    (h w) ← 32⌊⍵
-    table ← 'tbody' Tag ∊h/⊂'<tr>' (w/⊂'<td style=''background-color: rgb(255, 255, 255);''></td>') '</tr>'
-    _ ← WriteTable table
-
-    obj evt op 1 200 'OK' mime url hdr ⍬
-}
-
-Menu   ← {
-    (obj evt op int sc st mime url hdr data meth) ← ⍺
-    content ← Read 'menu/',⍵,'.html'
-    _ ← hr.ExecuteJavaScript 'document.getElementById("menu").innerHTML =`',content,'`'
-
-    obj evt op 1 200 'OK' mime url hdr ⍬
-}
-
-ToTable  ← {
-    ToRgb ← {∊'rgb('(','(1↓∘,,∘⍕⍤0)⍵⊤⍨3/256)')'}
-    cells ← ({⊂'<td style=''background-color: `;''></td>' In⍨⊂ToRgb⍵}⍤0)⍵
-    (∊'tbody' Tag {'<tr>'⍵'</tr>'}⍤1)cells
-}
-
-ToMatrix ← {
-    FromRgb ← {256⊥⍤1⎕CSV(~∘'rgb()'¨⍵)⍬ 2}
-    ⍺⍴FromRgb ⍵
-}
-
-RunAPL  ← {
-    (obj evt op int sc st mime url hdr data meth) ← ⍺
-
-    ⍳11::{
-        err ← ⎕DMX.EM,': ',⎕DMX.Message
-        _ ← hr.ExecuteJavaScript 'document.getElementById("stacktrace").innerHTML =`',err,'`'
-        obj evt op 1 200 'OK' mime url hdr ⍬
-    } ⍬
-        
-    (fn data shape) ← ⍵
-    _ ← WriteTable ToTable (⍎ 'UTF-8' ⎕UCS fn) shape ToMatrix data
-    _ ← hr.ExecuteJavaScript 'document.getElementById("stacktrace").innerHTML = ``'
-    obj evt op 1 200 'OK' mime url hdr ⍬
-}
-
-Save    ← {
-    (file data shape) ← ⍵
+    Handler ← {
+        (obj evt op int sc st mime url hdr data meth) ← 11↑⍵
      
-    file 1 ⎕NPUT⍨⊂⍕¨↓shape ToMatrix data
-} 
+        (fn arg)←0 ⎕JSON data
+        'Menu'   ≡ fn : Menu    arg
+        'Canvas' ≡ fn : ∆Canvas arg
+        'APL'    ≡ fn : APL     arg
 
-Post ← {
-    (obj evt op int sc st mime url hdr data meth) ← ⍵
+        obj evt op 1 200 'OK' mime url hdr ⍬
+    }
 
-    (expr fn arg) ← 0 ⎕JSON data
-    'evaluate'≡expr:⍵ (⍎fn) arg
-}
+    ∇ init;f
+      'f'⎕WC'Form'
+      f.(Posn Size) ← (0 0)(100 100)
+      'f.app'⎕WC'HTMLRenderer'('AsChild' 1)
+      f.app.ShowDevTools 1
+      f.app.(Event Posn Size HTML) ← ('HTTPRequest' 'Handler')(0 0)(100 100)(Css Js Read 'app.html')
+      ⎕DQ'f'
+    ∇
 
-Handler ← {
-    ⍺   ← 11↑⍵
-    (obj evt op int sc st mime url hdr data meth) ← ⍺
 
-    meth≡'GET' :Get  ⍺
-    meth≡'POST':Post ⍺
-}
-
-:EndNamespace
+:EndNameSpace

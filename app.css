@@ -32,6 +32,7 @@ input::-webkit-inner-spin-button {
   tr {
     height: 25px;
   }
+
   td {
     width: 25px;
   }
@@ -48,6 +49,7 @@ input::-webkit-inner-spin-button {
     padding: 0 0 0 0.5rem;
     border: 1px black solid;
   }
+
   summary {
     padding: 0 1rem 0 0.5rem;
   }
