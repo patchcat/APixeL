@@ -1,0 +1,4 @@
+createCanvas ← {
+     (h w) ← 32⌊⍵
+     setCanvas 'tbody' tag h ⍴⊂ 'tr' tag w ⍴⊂ '<td style=''background-color: rgb(255, 255, 255);''></td>'
+}

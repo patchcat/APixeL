@@ -1,0 +1,4 @@
+Handler ← {
+    (ref event id data fin type)←⍵
+    {(⍎⍺)⍵}/0 ⎕JSON data
+}

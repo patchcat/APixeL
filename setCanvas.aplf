@@ -1,0 +1,6 @@
+setCanvas ← {
+    js  ← 'document.getElementById("canvas").innerHTML ="',⍵,'";'
+    js ,← 'cells = document.querySelectorAll("td");'
+    js ,← 'cells.forEach(c => c.addEventListener("click", fillSquare))'
+    f.ExecuteJavaScript js
+}

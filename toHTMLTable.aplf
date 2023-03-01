@@ -1,0 +1,4 @@
+toHTMLTable ← {
+    cells ← {'<td style=''background-color: ',(fromRGB ⍵),';''></td>'}¨⍵
+    'tbody' tag, ('tr'∘tag⍤1) cells
+}

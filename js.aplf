@@ -1,0 +1,5 @@
+js ← { ⍝ inline js referenced in HTML
+    name ← '\w*.js\b'⎕S'&'⊢⍵
+    tmp  ← name replace ∊'\s*'∘,¨'<script src="`" charset="utf-8"></script>'
+    tmp⎕R('%\' escape 'script' tag ⊃∘⎕nget name)⊢⍵
+}

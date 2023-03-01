@@ -1,0 +1,5 @@
+css ← { ⍝ inline css referenced in HTML
+    name ← '\w*.css\b'⎕S'&'⊢⍵
+    tmp  ← name replace ∊'\s*'∘,¨'<link rel="stylesheet" href="`"/>'
+    tmp⎕R('%\' escape 'style' tag ⊃∘⎕nget name)⊢⍵
+}

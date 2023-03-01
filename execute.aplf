@@ -1,0 +1,7 @@
+execute ← {
+ ⍝ Trap and display user errors
+ 0::f.ExecuteJavaScript 'document.getElementById("stacktrace").innerHTML =`',(⎕DMX.(Message{⍵,⍺,⍨': '/⍨×≢⍺}⎕EM EN)),'`'
+
+ (fn data shape) ← ⍵
+ setCanvas toHTMLTable (⍎ 'UTF-8' ⎕UCS fn) shape ⍴∘toRGB data
+}

@@ -1,0 +1,3 @@
+toRGB ← { ⍝ css colour attributes to integer matrix
+    256⊥⍤1 ⎕CSV(~∘'rgb()'¨⍵)⍬ 2  ⍝ rgb(x,y,z) -> 256⊥x y z
+}

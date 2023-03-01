@@ -11,9 +11,9 @@ const Open     = (_)    => {
   let menu = document.getElementById("menu");
   menu.style.visibility = "visible";
 };
-const Canvas   = (h, w) => {Send(["Canvas", [parseInt(h), parseInt(w)]])};
-const Menu     = (type) => {Open();Send(["Menu", type])};
-const APL   = (f)    => {
+const createCanvas   = (h, w) => {Send(["createCanvas", [parseInt(h), parseInt(w)]])};
+const openMenuItem     = (type) => {Open();Send(["openMenuItem", type])};
+const Execute   = (f)    => {
   var utf8 = unescape(encodeURIComponent(f));
   var arr = [];
   for (var i = 0; i < utf8.length; i++) arr.push(utf8.charCodeAt(i));
@@ -22,7 +22,7 @@ const APL   = (f)    => {
     document.getElementById("canvas"),
   ];
   Send([
-    "APL",
+    "execute",
     [
       arr,
       [...cells].map((x) => x.style.backgroundColor),
@@ -31,7 +31,7 @@ const APL   = (f)    => {
   ]);
 };
 
-const Colour   = (colour) => {window.colour=colour;};
+const setColour   = (colour) => {window.colour=colour;};
 window.onload  = (_)      => {Drag(document.getElementById("menu"))};
 const Drag     = (el)     => {
   el.addEventListener("mousedown", function (e) {

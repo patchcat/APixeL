@@ -1,0 +1,5 @@
+{
+  Settings: {
+      LX: "⎕←⎕SE.Link.Create 'APixeL' ⎕SE.Link.LaunchDir ⋄ APixeL.Init"
+  }
+}

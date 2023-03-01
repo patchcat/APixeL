@@ -1,0 +1,4 @@
+openMenuItem ← {
+    content ← ⊃⎕nget 'menu/',⍵,'.html'
+    f.ExecuteJavaScript 'document.getElementById("menu").innerHTML =`',content,'`'
+}
